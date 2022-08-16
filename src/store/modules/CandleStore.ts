@@ -1,6 +1,6 @@
 import Candle from "@/models/Candle";
 import axios from "axios";
-import { Module, Mutation, VuexModule } from "vuex-module-decorators";
+import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
 
 const http = axios.create({
   baseURL: process.env.VUE_APP_CANDLES_API,
@@ -19,6 +19,22 @@ export default class CandleStore extends VuexModule {
           };
         })
       : [];
+  }
+
+  @Action
+  async loadInitialCandles() {
+    const result = await http.get(
+      `${process.env.VUE_APP_CANDLES_API_ENDPOINT}/10`
+    );
+    const candlesObj = result.data;
+    const candles: Candle[] = candlesObj.map((c: any) => new Candle(c));
+
+    // manda o array invertido para a action de inicialização
+    this.context.commit("_initializeCandles", candles.reverse());
+  }
+  @Action
+  addCandle(candle: Candle) {
+    this.context.commit("_appendNewCandle", candle);
   }
 
   @Mutation
