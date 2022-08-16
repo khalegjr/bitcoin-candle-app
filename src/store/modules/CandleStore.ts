@@ -1,7 +1,6 @@
 import Candle from "@/models/Candle";
-import { def } from "@vue/shared";
 import axios from "axios";
-import { Module, VuexModule } from "vuex-module-decorators";
+import { Module, Mutation, VuexModule } from "vuex-module-decorators";
 
 const http = axios.create({
   baseURL: process.env.VUE_APP_CANDLES_API,
@@ -20,5 +19,15 @@ export default class CandleStore extends VuexModule {
           };
         })
       : [];
+  }
+
+  @Mutation
+  private _initializeCandles(candles: Candle[]) {
+    this._candles = candles;
+  }
+
+  @Mutation
+  private _appendNewCandle(candle: Candle) {
+    this._candles.push(candle);
   }
 }
