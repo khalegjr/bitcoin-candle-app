@@ -15,39 +15,41 @@ import { Prop } from "vue-property-decorator";
 
 @Options({
   components: {
-    apexchart: VueApexCharts
-  }
+    apexchart: VueApexCharts,
+  },
 })
 
 export default class CandleStickChart extends Vue {
   @Prop()
-  candles = []
+  candles = [];
 
   chartOptions = {
     chart: {
-      type: 'candlestick',
-      height: 350
+      type: "candlestick",
+      height: 350,
     },
     title: {
       text: "Bitcoin last prices",
-      align: "center"
+      align: "center",
     },
     xaxis: {
-      type: "time"
+      type: "time",
     },
     yaxis: {
       tooltip: {
-        enable: true
-      }
-    }
-  }
+        enable: true,
+      },
+    },
+  };
 
-  series = [{
-    data: this.candles
-  }]
+  get series() {
+    const series = [{
+        data: this.candles,
+      }];
+
+    return series;
+  }
 }
 </script>
 
-<style>
-
-</style>
+<style></style>
